@@ -1,7 +1,10 @@
-/*
- * Rotary encoder library for Arduino.
+/* ExtendedIO.h handler for arduino.
+ *
+ * Copyright 2014 Micky Socaci. Licenced under the GNU GPL Version 3.
+ * Contact: micky@nowlive.ro
+ *
  */
-
+ 
 #ifndef ExtendedIO_h
 #define ExtendedIO_h
 

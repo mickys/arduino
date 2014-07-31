@@ -1,4 +1,4 @@
-/* ExtendedIO handler for arduino.
+/* ExtendedIO.cpp handler for arduino.
  *
  * Copyright 2014 Micky Socaci. Licenced under the GNU GPL Version 3.
  * Contact: micky@nowlive.ro
