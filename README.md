@@ -1,4 +1,4 @@
-arduino
+Micky's arduino libraries
 =======
 
-arduino libraries
+A collection of libraries i've created or modified.
