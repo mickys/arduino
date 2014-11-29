@@ -167,21 +167,13 @@ boolean ExtendedRotary::getButtonState() {
 
     int s = (*currentIoDigitalRead)(buttonPin);
 	
-
-	
 	if(buttonLastState != s) {
-
-		// Serial.print("current=");
-		// Serial.print(s);
-		// Serial.print("last=");
-		// Serial.println(buttonLastState);
 		
 		buttonLastState = s;
 		if(s == 1) {
 			return true;
 		}
 	}
-	
 	
     return false;
 }
@@ -202,7 +194,6 @@ void ExtendedRotary::setCounter( int _count) {
 
 int ExtendedRotary::getCounter() {
     return count;
-//    return br;
 }
 
 int ExtendedRotary::getId() {
@@ -217,8 +208,6 @@ void ExtendedRotary::setBrightness()
         brightness = 255;
     }
     br = brightness;
-
-    // analogWrite(LED_PIN, brightness);
 }
 
 void ExtendedRotary::addCounter()
@@ -257,11 +246,7 @@ void ExtendedRotary::debug()
           Serial.print( res );
      }
      Serial.println("");
-//     io.debug();
-//      Serial.print(io.IOdigitalRead(pin1));
-//      Serial.print("/");
-//      Serial.println(io.IOdigitalRead(pin2));
-}
+ }
 
 int ExtendedRotary::getOutput() {
     return outputPin;

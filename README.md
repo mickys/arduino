@@ -6,6 +6,7 @@ Libraries i've created or modified.
 ExtendedIO
 =======
 A Library that provides support for reading daisy-chained "8 bit" shift registers like the "74HC165" in an Arduino like way ( io.IODigitalRead(PinNumber) ).
+- 74HC165 - 8-bit parallel-in/serial out shift register 
 
 Uses bit shifting in order to preserve chip memory.
 
