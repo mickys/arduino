@@ -7,8 +7,8 @@
  
 #ifndef ExtendedIO_h
 #define ExtendedIO_h
-
-#include "WProgram.h"
+// #include "WProgram.h"
+#include "Arduino.h"
 
 
 
@@ -20,7 +20,6 @@ class ExtendedIO
     void debug();
     int IOdigitalRead(int);
     void printLong(long);
-    int freeRam();
     void printPinStates();
 
   private:
@@ -32,9 +31,7 @@ class ExtendedIO
     int clockEnablePin;
     int ploadPin;
     int numberOfChips;
-
     int numberOfPins;
-    // unsigned int pinValues[1];
     long cache[8];
     int cacheSections;
 };

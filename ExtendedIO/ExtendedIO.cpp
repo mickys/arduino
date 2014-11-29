@@ -5,7 +5,8 @@
  *
  */
 
-#include "WProgram.h"
+// #include "WProgram.h"
+#include "Arduino.h"
 #include "ExtendedIO.h"
 
 /* Width of pulse to trigger the shift register to read and latch.
@@ -18,16 +19,19 @@
 
 #define CHIPS_PER_CACHE_VAR   4
 #define DATA_WIDTH 4 * 8
+
 /*
  * Constructor. 
  *
- * int dataPin         = 12; // Connects to the Q7 pin the 165
- * int clockPin        = 11; // Connects to the Clock pin the 165
- * int clockEnablePin  = 9;  // Connects to Clock Enable pin the 165
- * int ploadPin        = 8;  // Connects to Parallel load pin the 165
+ * int dataPin         = 12; // Connects to the 74HC165 - Q7 pin
+ * int clockPin        = 11; // Connects to the 74HC165 - Clock pin
+ * int clockEnablePin  = 9;  // Connects to the 74HC165 - Clock Enable pin
+ * int ploadPin        = 8;  // Connects to the 74HC165 - Parallel load pin
  *
 */
-ExtendedIO::ExtendedIO(int _dataPin, int _clockPin, int _clockEnablePin, int _ploadPin, int _numberOfChips) {
+
+ExtendedIO::ExtendedIO(int _dataPin, int _clockPin, int _ploadPin, int _clockEnablePin, int _numberOfChips) {
+	
   // Assign variables.                          
   dataPin = _dataPin;
   clockPin = _clockPin;
@@ -77,7 +81,7 @@ int ExtendedIO::IOdigitalRead(int pin)
 void ExtendedIO::read_shift_regs()
 {
     long bitVal;
-    unsigned long bytesVal = 0;
+    
 
     /* Trigger a parallel Load to latch the state of the data lines,
     */
@@ -87,18 +91,23 @@ void ExtendedIO::read_shift_regs()
     digitalWrite(ploadPin, HIGH);
     digitalWrite(clockEnablePin, LOW);
 
-    /* Loop to read each bit value from the serial out line
-     * of the SN74HC165.
-    */
+    // Loop to read each bit value from the serial out line
+    // of the SN74HC165.
     
-    // reverse bit stream so pin 1 is bit 1!
+    // reverse bit stream so pin 1 is first bit!
     // foreach group of 4     
-    for(int i = cacheSections; i >= 0; i--)
+    for(int i = cacheSections-1; i >= 0; i--)
     {
-      // i should probably use some buffers and only daisy chain 4 shift registers at a time.. 
+      unsigned long bytesVal = 0;
+	  
+      // we should probably use some buffers and only daisy chain 4 shift registers at a time.
+	  // yet i have been unable to use a 74HC595 for this purpose.
+	  // so at the moment we daisy chain as many 165's as we can.
+	  
       // this is where we should be switching betweem chip arrays!
-      // request 8 * 4 bits
-      for(int z = DATA_WIDTH; z >= 0; z--)
+      
+	  // request 8 * 4 bits
+      for(int z = DATA_WIDTH; z > 0; z--)
       {
         bitVal = digitalRead(dataPin);
 
@@ -113,8 +122,6 @@ void ExtendedIO::read_shift_regs()
       
       cache[i] = bytesVal;
     }
-    
-    
 }
 
 // A function that prints all the 1's and 0's of a byte, so 8 bits +or- 2
@@ -130,14 +137,11 @@ void ExtendedIO::printLong(long val)
 
 void ExtendedIO::debug()
 {
-     Serial.print("Debug CacheSections:");
-     Serial.print(cacheSections);
-     for(int i = 0; i < cacheSections; i++)
+	for(int i = 0; i < cacheSections; i++)
      {
-          Serial.print(" ByteCacheID[");
-          Serial.print(i);
-          Serial.print("]: ");
-          printLong(cache[i]);
+		 Serial.print(i);
+         Serial.print(": ");
+         printLong(cache[i]);
      }
 }
 
@@ -145,16 +149,11 @@ void ExtendedIO::printPinStates()
 {
      for(int i = 1; i <= numberOfChips*8 ; i++ )
      {
-          Serial.print("Pin id:");
-          Serial.print(i);
           if(IOdigitalRead(i) == HIGH)
           {
+              Serial.print("Pin id:");
+              Serial.print(i);
               Serial.println(" is HIGH");
-          }
-          else
-          {
-             Serial.println(" is LOW");
           }
       }
 }
-
